@@ -1,45 +1,28 @@
 {
+	
     "version": "2.0.0",
     "runner": "terminal",
     "type": "shell",
     "echoCommand": true,
-    "presentation": {
-        "reveal": "always"
-    },
+    "presentation" : { "reveal": "always" },    
     "tasks": [
+        // build task
         {
-            "label": "save and compile for C++",
-            "command": "g++",
-            "args": [
-                "${file}",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
-            ],
-            "group": "build",
-            "problemMatcher": {
-                "fileLocation": [
-                    "relative",
-                    "${workspaceRoot}"
-                ],
-                "pattern": {
-                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning error):\\s+(.*)$",
-                    "file": 1,
-                    "line": 2,
-                    "column": 3,
-                    "severity": 4,
-                    "message": 5
-                }
-            }
-        },
-        {
-            "label": "save and compile for C",
+            "label": "build c",
             "command": "gcc",
             "args": [
                 "${file}",
+                "-g",  // debug option, 디버깅 안 할 거라면 없애도 된다(실행파일 용량이 작아짐)
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                // 해당 디렉토리 내에 bin 디렉토리를 미리 생성해주어야 한다
+                "${fileDirname}\\bin\\${fileBasenameNoExtension}"
             ],
-            "group": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true,
+                },
+            
+            //컴파일시 에러를 편집기에 반영 (problem matcher)
             "problemMatcher": {
                 "fileLocation": [
                     "relative",
@@ -53,38 +36,21 @@
                     "severity": 4,
                     "message": 5
                 }
-            }
+            },
         },
+
+        // test task
         {
             "label": "execute",
-            "command": "cmd",
-            "group": "test",
+            "command": "powershell",
             "args": [
                 "/C",
-                "${fileDirname}\\${fileBasenameNoExtension}"
-            ]
-        },
-        {
-            "type": "cppbuild",
-            "label": "C/C++: g++.exe build active file",
-            "command": "C:/mingw64/bin/g++.exe",
-            "args": [
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
-            ],
-            "options": {
-                "cwd": "C:/mingw64/bin"
-            },
-            "problemMatcher": [
-                "$gcc"
+                "${fileDirname}\\bin\\${fileBasenameNoExtension}"
             ],
             "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "detail": "Generated task by Debugger"
-        }
+                "kind": "test",
+                "isDefault": true,
+                },
+        },
     ]
 }
