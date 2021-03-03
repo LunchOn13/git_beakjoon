@@ -21,17 +21,16 @@ int solution(string skill, vector<string> skill_trees) {
         for(int j = 0; j < skill_trees[i].length(); j ++)
         {
             int tmp = (int)skill_trees[i][j];
-            if(tmp != 0)
+            if(arr[tmp] != 0)
                 check.push_back(arr[tmp]);
         }
         
         bool success = true;
-        for(int j = 0; j < check.size()-1; j++)
+        for(int j = 0; j < check.size(); j++)
         {
-            if((check[i+1] - check[i] ) < 1 )
+            if(check[j] != j+1)
             {
-                // fail
-                success= false;
+                success = false;
                 break;
             }
         }
